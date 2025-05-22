@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "books")
@@ -11,9 +15,23 @@ public class Book {
     @Id
     @GeneratedValue
     private Long id;
+
+    @NotBlank
+    @Column(nullable = false)
     private String title;
+
+    @NotBlank
+    @Column(nullable = false)
     private String author;
+
+    @NotNull
+    @Positive
+    @Column(nullable = false)
     private Double price;
+
+    // Default constructor required by JPA
+    public Book() {
+    }
 
     // Getters and Setters
     public Long getId() {
