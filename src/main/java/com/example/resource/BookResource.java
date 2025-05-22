@@ -4,10 +4,13 @@ import com.example.entity.Book;
 import com.example.entity.Author;
 import com.example.repository.BookRepository;
 import com.example.repository.AuthorRepository;
+import com.example.filter.BookFilter;
+import com.example.filter.BookFilterInput;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.graphql.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @GraphQLApi
@@ -19,9 +22,22 @@ public class BookResource {
     AuthorRepository authorRepository;
 
     @Query("allBooks")
-    @Description("Get all books")
-    public List<Book> getAllBooks() {
-        return bookRepository.listAll();
+    @Description("Get all books with optional filtering")
+    public List<Book> getAllBooks(
+        @Name("filter") BookFilterInput filter
+    ) {
+        BookFilter bookFilter = new BookFilter();
+        if (filter != null) {
+            bookFilter.setTitle(filter.getTitle());
+            bookFilter.setAuthorName(filter.getAuthorName());
+            bookFilter.setMinPrice(filter.getMinPrice());
+            bookFilter.setMaxPrice(filter.getMaxPrice());
+            bookFilter.setSortBy(filter.getSortBy());
+            bookFilter.setSortDirection(filter.getSortDirection());
+            bookFilter.setPage(filter.getPage());
+            bookFilter.setPageSize(filter.getPageSize());
+        }
+        return bookFilter.createQuery().list();
     }
 
     @Query("book")
