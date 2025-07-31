@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "authors")
-public class Author {
+public class Author extends PanacheEntityBase {
     @Id
     @GeneratedValue
     private Long id;
@@ -54,4 +55,4 @@ public class Author {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
-} 
+}
