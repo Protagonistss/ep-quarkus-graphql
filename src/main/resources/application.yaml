@@ -1,0 +1,63 @@
+# HTTP Configuration
+quarkus:
+  http:
+    port: 9090
+    cors:
+      origins: "*"
+
+  # Database Configuration
+  datasource:
+    db-kind: mysql
+    username: root
+    password: root
+    jdbc:
+      url: "jdbc:mysql://127.0.0.1:3306/graphql_learning?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+    devservices:
+      enabled: false
+
+  # Hibernate ORM Configuration
+  hibernate-orm:
+    database:
+      generation: validate
+    log:
+      sql: true
+      bind-parameters: true
+    dialect: org.hibernate.dialect.MySQLDialect
+
+  # Logging Configuration
+  log:
+    category:
+      "org.hibernate.SQL":
+        level: DEBUG
+      "org.hibernate.type.descriptor.sql.BasicBinder":
+        level: TRACE
+    min-level: DEBUG
+
+  # GraphQL Configuration
+  smallrye-graphql:
+    error-extension-fields: "exception,classification,code,description"
+    events:
+      enabled: true
+    ui:
+      always-include: true
+
+  # Development mode settings
+  dev-ui:
+    always-include: true
+
+# 开发环境特定配置
+"%dev":
+  quarkus:
+    datasource:
+      devservices:
+        enabled: false
+    hibernate-orm:
+      database:
+        generation: update
+
+# 生产环境特定配置
+"%prod":
+  quarkus:
+    hibernate-orm:
+      database:
+        generation: validate
